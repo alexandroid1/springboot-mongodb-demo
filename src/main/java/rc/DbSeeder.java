@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Александр on 19.07.2017.
@@ -12,10 +13,15 @@ import java.util.Arrays;
 
 @Component
 public class DbSeeder implements CommandLineRunner { // executed when springboot starts
+    private HotelRepository hotelRepository;
+
+    public DbSeeder (HotelRepository hotelRepository){
+        this.hotelRepository = hotelRepository;
+    }
 
     @Override
     public void run(String... strings) throws Exception {
-        
+
         Hotel marriot = new Hotel(
                 "Marriot",
                 130,
@@ -63,5 +69,11 @@ public class DbSeeder implements CommandLineRunner { // executed when springboot
                 new ArrayList<>()
         );
 
+        //drop all hotels
+        this.hotelRepository.deleteAll();
+
+        //add hotels to database
+        List<Hotel> hotels = Arrays.asList(marriot,ibis,sofitel);
+        this.hotelRepository.save(hotels);
     }
 }
