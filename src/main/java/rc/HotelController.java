@@ -15,6 +15,10 @@ import java.util.List;
 public class HotelController {
     private HotelRepository hotelRepository;
 
+    public HotelController (HotelRepository hotelRepository){
+        this.hotelRepository = hotelRepository;
+    }
+
     @GetMapping("/all")
     public List<Hotel> getAll(){
         List<Hotel> hotels = this.hotelRepository.findAll();
