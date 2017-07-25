@@ -1,5 +1,6 @@
 package rc;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +56,20 @@ public class HotelController {
     @GetMapping("/address/{city}")
     public List<Hotel> getByCity(@PathVariable("city") String city){
         List<Hotel> hotels = this.hotelRepository.findByCity(city);
+
+        return hotels;
+    }
+
+    @GetMapping("/country/{country}")
+    public List<Hotel> getByCountry(@PathVariable("country") String country){
+        // create a query class (QHotel)
+        QHotel qHotel = new QHotel("hotel");
+
+        // using the query class we can create the filters
+        BooleanExpression filterByCountry = qHotel.address.country.eq(country);
+
+        // we can then pass the filters to the findAll() method
+        List<Hotel> hotels = (List<Hotel>) this.hotelRepository.findAll(filterByCountry);
 
         return hotels;
     }
