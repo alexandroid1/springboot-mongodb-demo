@@ -60,8 +60,10 @@ public class HotelController {
         return hotels;
     }
 
+    // filter by single criteria
     @GetMapping("/country/{country}")
     public List<Hotel> getByCountry(@PathVariable("country") String country){
+
         // create a query class (QHotel)
         QHotel qHotel = new QHotel("hotel");
 
@@ -70,6 +72,28 @@ public class HotelController {
 
         // we can then pass the filters to the findAll() method
         List<Hotel> hotels = (List<Hotel>) this.hotelRepository.findAll(filterByCountry);
+
+        return hotels;
+    }
+
+    // filter by multiple criteria
+    @GetMapping("/recommended")
+    public List<Hotel> getRecommended(){
+        final int maxPrice = 100;
+        final int minRating = 7;
+
+        // create a query class (QHotel)
+        QHotel qHotel = new QHotel("hotel");
+
+        // using the query class we can create the filters
+        // lt - less then
+        // gt - greater then
+        BooleanExpression filterByPrice = qHotel.pricePerNight.lt(maxPrice);
+        BooleanExpression filterByRating = qHotel.reviews.any().rating.gt(minRating);
+
+        // apply this ffilters
+        // we can then pass the filters to the findAll() method
+        List<Hotel> hotels = (List<Hotel>) this.hotelRepository.findAll(filterByPrice.and(filterByRating));
 
         return hotels;
     }
