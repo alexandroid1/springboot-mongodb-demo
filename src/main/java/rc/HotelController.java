@@ -3,7 +3,9 @@ package rc;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Александр on 20.07.2017.
@@ -97,4 +99,18 @@ public class HotelController {
 
         return hotels;
     }
+
+    //return as list
+    @GetMapping(value="/test/{hotels}")
+    public String[] test(@PathVariable String[] hotels)
+    {
+
+        /**
+         * do something
+         */
+
+        return hotels;
+    }
+
+
 }
